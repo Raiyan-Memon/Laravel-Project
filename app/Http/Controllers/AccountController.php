@@ -4,9 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\Account;
 use Illuminate\Http\Request;
+use App\Repository\AccountRepositoryInterface;
+use Illuminate\Http\Response;
+use Illuminate\Http\JsonResponse;
 
 class AccountController extends Controller
 {
+
+    // for repo
+    private AccountRepositoryInterface $accountRepoInterface;
+
     /**
      * Display a listing of the resource.
      *
@@ -14,20 +21,31 @@ class AccountController extends Controller
      */
 
 
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('auth');
+    // }
 
+
+    // constructor for repo
+
+    public function __construct( AccountRepositoryInterface $accountRepoInterface){
+
+        $this->middleware('auth');
+        $this->accountRepoInterface = $accountRepoInterface;
+    }
 
     
     public function index()
     {
-        // echo "<script>alert('message');</script>";
-        $account = account::all();
-        return view('accounts.index',compact('account'));
+        // $account = account::all();
+        // return view('accounts.index', compact('account'));
+        // return response()->json([
+        //     'account' => $this->accountRepoInterface->index(),
+        // ]);
 
-        // return view('accounts.index');
+        return view('accounts.index',['account'=>$this->accountRepoInterface->all()]);
+        
     }
 
     /**
@@ -49,8 +67,7 @@ class AccountController extends Controller
      */
     public function store(Request $request)
     {
-
-        echo "<script>alert('Inserted');</script>"; 
+ 
        $input = $request -> validate([
             'user_name' => 'required',
             'first_name' => 'required',
@@ -64,27 +81,11 @@ class AccountController extends Controller
             'country' => '',
             'state' =>''
            
-
         ]);
         // dd($request->toarray());
       
-      $query = account::create($input);
-
-           
-
-           
-
-    // $person = new Person;
-    // $person->name = $request->name;
-    // $person->dob = $request->dob;
-    // $person->age = $request->age;
-    // $person->description = $request->description;
-    // $person->phone = $request->phone;
-    // $person->email = $request->email;
-    // // $person->hobbies = $request->hobbies;
-    // $person->gender = $request->gender;
-    // $person->save();
-
+    //   $query = account::create($input);
+    $this->accountRepoInterface->create($input);
     
     return redirect()-> route('accounts.index') -> with('insert-msg','successfully inserted');
     }
@@ -97,7 +98,7 @@ class AccountController extends Controller
      */
     public function show(Account $account)
     {
-        return view('accounts.show');
+        return view('accounts.show', ['account'=>$this->accountRepoInterface->find($account->id)]);
         // echo "this is show";
     }
 
@@ -109,7 +110,8 @@ class AccountController extends Controller
      */
     public function edit(Account $account)
     {
-        return view('accounts.edit', compact('account'));
+        
+        return view('accounts.edit', ['account'=>$this->accountRepoInterface->find($account->id)]);
         
     }
 
@@ -138,7 +140,8 @@ class AccountController extends Controller
 
         // dd($account->id, $request->all('user_name','first_name','last_name','dob','phone','email','address'));
 
-        account::where('id',$account->id)->update($request->all('user_name','first_name','last_name','dob','phone','email','address','hobby','gender','country','state'));
+        $this->accountRepoInterface->update($request,$account->id);
+        // account::where('id',$account->id)->update($request->all('user_name','first_name','last_name','dob','phone','email','address','hobby','gender','country','state'));
         return redirect() -> route('accounts.index') -> with('update-msg',"Updated Successfully");
     }
 
@@ -151,9 +154,13 @@ class AccountController extends Controller
     public function destroy(Account $account)
     {
     //    $account->delete();
-        account::find($account->id)->delete();
+        // account::find($account->id)->delete();
 
-        $msg = "<script>alert('Inserted');</script>"; 
+        // account::findOrFail($account->id)->delete();
+
+        $this->accountRepoInterface->delete($account->id);
+
+
         return redirect() -> route('accounts.index') ->with('message', 'Deleted');
 
      

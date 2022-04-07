@@ -60,7 +60,7 @@
             <td>{{$data->phone}}</td>
             <td>{{$data->email}}</td>
             <td>{{$data->address}}</td>
-            <td>{{$data->hobby}}</td>
+            <td>{{$data->hobby}}</td> 
             <td>{{$data->gender}}</td>
             <td>{{$data->country}}</td>
             <td>{{$data->state}}</td>
