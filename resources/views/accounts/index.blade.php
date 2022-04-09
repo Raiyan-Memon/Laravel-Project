@@ -28,23 +28,36 @@
 
 {{-- <script> alert("Raiyan");</script> --}}
 
+{{-- <div class="container" id="raiyan"></div> --}}
+
+
+
+<h1 class="text-center">Accounts</h1>
+
+<div class="container">
 <a href="{{route('accounts.create')}}"> <button class="btn btn-primary">Insert Data</button></a>
 
-<table class="table">
+<div class="table-responsive">
+<table class="table table-bordered">
     <thead>
         <tr>
-            <th scope="col">id</th>
+            {{-- <th scope="col">id</th> --}}
             <th scope="col">User Name</th>
-            <th scope="col">First Name</th>
+            {{-- <th scope="col">First Name</th>
             <th scope="col">Last Name</th>
             <th scope="col">Date of birth</th>
-            <th scope="col">Phone</th>
+            <th scope="col">Phone</th> --}}
             <th scope="col">Email</th>
-            <th scope="col">Address</th>
+            {{-- <th scope="col">Address</th>
             <th scope="col">Hobby</th>
             <th scope="col">Gender</th>
             <th scope="col">Country</th>
-            <th scope="col">State</th>
+
+            <th scope="col">State</th> --}}
+
+        
+            <th scope="col">Contact</th>
+            <th scope="col">Projects</th>
             <th scope="col">Actions</th>
         </tr>
     </thead>
@@ -52,18 +65,33 @@
         @foreach($account as $data)
 
         <tr>
-            <th scope="row">{{$data->id}}</th>
+            {{-- <th scope="row">{{$data->id}}</th> --}}
             <td>{{$data->user_name}}</td>
-            <td>{{$data->first_name}}</td>
+            {{-- <td>{{$data->first_name}}</td>
             <td>{{$data->last_name}}</td>
             <td>{{$data->dob}}</td>
-            <td>{{$data->phone}}</td>
+            <td>{{$data->phone}}</td> --}}
             <td>{{$data->email}}</td>
-            <td>{{$data->address}}</td>
+          
+            <td>
+                @foreach ($data->contacts as $contact)
+                {{$contact->name}}<br>
+                @endforeach
+            </td>
+
+            <td>
+                @foreach ($data->Projects as $project)
+                {{$project->name}}<br>
+                @endforeach
+            </td>
+            {{-- <td>{{$data->address}}</td>
             <td>{{$data->hobby}}</td> 
             <td>{{$data->gender}}</td>
             <td>{{$data->country}}</td>
-            <td>{{$data->state}}</td>
+            <td>{{$data->state}}</td> --}}
+            {{-- <td> --}}
+                {{-- @dump($account->contacts    ) --}}
+            {{-- </td> --}}
             <td>
                 <a href="{{route('accounts.show',$data->id)}}"> <button class="btn btn-primary">Show</button></a>
                 <a href="{{route('accounts.edit',$data->id)}}"> <button class="btn btn-success">Edit</button></a>
@@ -101,6 +129,51 @@
 
     </tbody>
 </table>
+</div>
+</div>
+
+{{-- {{$contact->name}} --}}
+
+<span>
+    {{$account->links()}}
+   </span>
+   
+   <style>
+   
+  
+
+
+     .text-sm.text-gray-700.leading-5{
+    
+       display: inline-block;
+     }
+   
+   .font-medium{
+     display: inline;
+   }
+     .w-5{
+       display: none;
+     }
+
+
+
+     table { 
+  width: 100%; 
+  border-collapse: collapse; 
+     }
+     </style>
+{{-- 
+<h1 id="demo"></h1>
+<button onclick="myFunction()">Click me</button>
+
+
+<script>
+
+function myFunction(){
+    document.getElementById("demo").innerHTML = "Hello World";
+}
+    </script> --}}
+
 
 </body>
 

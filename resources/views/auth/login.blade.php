@@ -62,6 +62,11 @@
                                         {{ __('Forgot Your Password?') }}
                                     </a>
                                 @endif
+
+                             
+                                  <a class="btn btn-primary btn-block" href="/sign-in/github"><img src="{{ asset('icons8-github-50.png') }}" alt="description of myimage"> GitHub</a>
+                                  <a class="btn btn-primary btn-block" href="/sign-in/google"><img src="{{ asset('icons8-google-48.png') }}" alt="description of myimage"> Google</a>
+                                </a>
                             </div>
                         </div>
                     </form>

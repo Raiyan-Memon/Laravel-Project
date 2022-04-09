@@ -28,11 +28,11 @@
 </div>
 
 <div>
-    <h1></h1>
+  
 </div>
 
 <div class="form-group">
-    <label for="">Last Name</label>
+    <label for="last_name">Last Name</label>
     {{-- <input type="text" class="form-control" name="last_name" value="{{$account->last_name ?? "" }}"> --}}
     {!!form::text('last_name', isset($account->last_name) ? $account->last_name : null   ,[
         'class' => 'form-control'
@@ -111,11 +111,32 @@ Batminton<input type="checkbox" class="" name="hobby[]" value="batminton"><br>
 Football<input type="checkbox" class="" name="hobby[]" value="football"><br>
 </div> --}}
 
-<div class="form-group">
+{{-- @dd($account->hobby) --}}
+
+@php
+
+if(isset($account)){
+
+// $cricket = strpos($account->hobby, "cricket");
+$badminton = strpos($account->hobby, "badminton");
+$football = strpos($account->hobby, "football");
+
+$cricket = strstr($account->hobby, 'cricket');
+// dd($cricket);
+
+}
+@endphp
+
+
+
+
+<div class="form-group">    
     <label for="">Hobby</label><br>
-Cricket{!!Form::checkbox('hobby[]', 'cricket')!!}
-Batminton{!!Form::checkbox('hobby[]', 'batminton')!!}
-Football{!!Form::checkbox('hobby[]', 'football')!!}
+Cricket{!!Form::checkbox('hobby[]', 'cricket', ($cricket ?? '')  !== false ? "checked" : NULL)!!}
+Batminton{!!Form::checkbox('hobby[]', 'badminton', ($badminton ?? '') !== false ? "checked" : NULL)!!}
+Football{!!Form::checkbox('hobby[]', 'football', ($football ?? '') !== false ? "checked" : NULL)!!}
+
+<p style="color:rgb(179, 179, 179)">Note : Unselect one which you don't like</p>
 </div>
 
 
@@ -135,7 +156,7 @@ Football{!!Form::checkbox('hobby[]', 'football')!!}
     <option name="country" value="" >Select your Country</option>
     <option name="country" value="india" {{($account->country ?? '') == 'india' ? "Selected" : ""}}>India</option>
     <option name="country" value="china" {{($account->country ?? '') == 'china' ? "Selected" : ""}}>China</option>
-    <option name="country" value="pakistan" {{($account->country ?? '') == 'pakistan' ? "Selected" : ""}}>Pakistan</option> --}}
+    <option name="country" value="pakistan" {{($account->country ?? '') == 'pakistan' ? "Selected" : ""}}>Pakistan</option> 
 </select>
 
 
@@ -154,9 +175,118 @@ Football{!!Form::checkbox('hobby[]', 'football')!!}
     <option name="state" value="up" {{($account->state ?? '') == 'up' ? "Selected" : ""}}>Up</option>
 </select>
   
+<br>
+<br>
+{{-- <h3>Attaching the relationship</h3> --}}
+
+
+{{-- <div class="form-group row">
+    
+    <label for="contact_id" name="contact_id" value="Contact">Contacts</label>
+    
+    @php
+    $contacts = DB::table('contacts')->select('name','id')->get();   
+    @endphp
+    <select class="form-control" name="contact_id" >
+        <option name="contact_id" value="" >Select your Contact</option>
+        @foreach($contacts as $contact)
+        <option value="{{$contact->id}}">{{$contact->name}}
+            @endforeach
+            
+        </select>
+        <input type="hidden" name="relationshipmodulename[]" value="Contact">
+    </div> --}}
+    
+    @if(isset($account->Projects))
+    {{-- Check here if you want to Detach<input type="checkbox" name="checkbox" value="unknown"> --}}
+    <div class="form-check form-switch">
+        <input style="cursor: pointer" class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" name="checkbox" value="unknown">
+        <label style="cursor: pointer" class="form-check-label" for="flexSwitchCheckChecked">Switch here if you want to Detach</label>
+      </div>
+    @endif
+    
+    <div class="form-group row">
+        
+        <label for="contact_id" name="contact_id" value="Contact">Contacts</label>
+        
+        @php
+      $contacts = DB::table('contacts')->select('name','id')->get();   
+      @endphp
+     
+    <select class="form-control" name="contact_id" >
+        <option name="contact_id" value="" >Select your Contact</option>
+        @foreach(($contacts ?? '') as $contact)
+        <option value="{{$contact->id}}">{{$contact->name}}
+            @endforeach</option>
+
+
+ {{-- @dd(isset($account->contacts))  --}}
+ 
+ @if(isset($account->contacts))
+
+            <option><br></option>
+            <option>Attached : </option>
+            @foreach ((($account->contacts) ?? '') as $contact)
+            <option value="{{($contact->id ?? '')}}">
+                {{($contact->name ?? '')}}
+                @endforeach
+@endif
+                
+            </select>
+
+            <input type="hidden" name="relationshipmodulename[]" value="Contact">
+        </div>
+        
+        <br>
+
+<div class="form-group row">
+ 
+   
+    <label for="project_id" name="project_id" value="User">Projects</label>
+    @php
+      $projects = DB::table('projects')->select('name','id')->get();   
+      
+      @endphp
+    <select class="form-control" name="project_id">
+        <option name="state" value="" >Select your Project</option>
+        @foreach($projects as $project)
+        <option value="{{$project->id}}">{{$project->name}}
+            @endforeach</option>
+            <option></option>
+
+    @if(isset($account->Projects))
+            <option>Attached : </option>
+        @foreach ($account->Projects as $project)
+       <option value="{{$project->id}}">
+        {{$project->name}}
+        @endforeach
+    @endif
+    
+        </select>    
+        <input type="hidden" name="relationshipmodulename[]" value="Project">
+    </div>
+
+  
+
+  
+
+{{-- <h3>Detaching the relationship</h3> --}}
+
+
+
+        {{-- <label for="contact_id" name="contactid" value="Contact">Contacts</label>
+        <select class="form-control" name="contact_id">
+        <option name="" value="" ></option>
+        @foreach(($account->contacts ?? '') as $contact)
+        <option value="{{$contact->id}}">{{$contact->name}}
+            @endforeach
+    
+        </select>    
+        <input type="hidden" name="detachmodulename[]" value="Contact"> --}}
 
 <br>
 
-
 <button type="submit" class="btn btn-primary">Submit</button>
+<br>
+<br>
 </div>

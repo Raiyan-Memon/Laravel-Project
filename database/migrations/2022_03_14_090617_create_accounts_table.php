@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('accounts', function (Blueprint $table) {
-            $table->id('id');
+            $table->uuid('id')->primary()->unique();
             $table->string('user_name');
             $table->string('first_name');
             $table->string('last_name');
@@ -23,9 +23,9 @@ return new class extends Migration
             $table->string('email');
             $table->string('address');
             $table->string('hobby')->nullable();
-            $table->enum('gender',["male","female"])->nullable();
-            $table->enum('country',['india','china','pakistan'])->nullable();
-            $table->enum('state',['gujarat','maharashtra','up'])->nullable();
+            $table->enum('gender', ["male", "female"])->nullable();
+            $table->enum('country', ['india', 'china', 'pakistan'])->nullable();
+            $table->enum('state', ['gujarat', 'maharashtra', 'up'])->nullable();
 
 
             $table->timestamps();

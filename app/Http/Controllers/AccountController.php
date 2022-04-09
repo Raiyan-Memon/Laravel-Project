@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Account;
 use Illuminate\Http\Request;
-use App\Repository\AccountRepositoryInterface;
+use App\Interface\Modules\AccountRepositoryInterface;
+use App\Traits\mytrait;
 use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
+
+use Illuminate\Support\Facades\Auth;
 
 class AccountController extends Controller
 {
@@ -29,23 +32,27 @@ class AccountController extends Controller
 
     // constructor for repo
 
-    public function __construct( AccountRepositoryInterface $accountRepoInterface){
+    public function __construct(AccountRepositoryInterface $accountRepoInterface)
+    {
 
         $this->middleware('auth');
         $this->accountRepoInterface = $accountRepoInterface;
     }
 
-    
+
     public function index()
     {
         // $account = account::all();
-        // return view('accounts.index', compact('account'));
+        // return view('accounts.index', compact('account'));ju
         // return response()->json([
         //     'account' => $this->accountRepoInterface->index(),
         // ]);
 
-        return view('accounts.index',['account'=>$this->accountRepoInterface->all()]);
-        
+
+        //    use mytrait::calling();
+        // $user = Auth::user();
+        // dd($user);
+        return view('accounts.index', ['account' => $this->accountRepoInterface->all()]);
     }
 
     /**
@@ -55,7 +62,7 @@ class AccountController extends Controller
      */
     public function create()
     {
-       
+
         return view('accounts.create');
     }
 
@@ -67,8 +74,8 @@ class AccountController extends Controller
      */
     public function store(Request $request)
     {
- 
-       $input = $request -> validate([
+
+        $input = $request->validate([
             'user_name' => 'required',
             'first_name' => 'required',
             'last_name' => 'required',
@@ -79,15 +86,15 @@ class AccountController extends Controller
             'gender' => '',
             'hobby' => '',
             'country' => '',
-            'state' =>''
-           
+            'state' => ''
+
         ]);
         // dd($request->toarray());
-      
-    //   $query = account::create($input);
-    $this->accountRepoInterface->create($input);
-    
-    return redirect()-> route('accounts.index') -> with('insert-msg','successfully inserted');
+
+        //   $query = account::create($input);
+        $this->accountRepoInterface->create($input);
+
+        return redirect()->route('accounts.index')->with('insert-msg', 'successfully inserted');
     }
 
     /**
@@ -98,7 +105,7 @@ class AccountController extends Controller
      */
     public function show(Account $account)
     {
-        return view('accounts.show', ['account'=>$this->accountRepoInterface->find($account->id)]);
+        return view('accounts.show', ['account' => $this->accountRepoInterface->find($account->id)]);
         // echo "this is show";
     }
 
@@ -110,9 +117,8 @@ class AccountController extends Controller
      */
     public function edit(Account $account)
     {
-        
-        return view('accounts.edit', ['account'=>$this->accountRepoInterface->find($account->id)]);
-        
+
+        return view('accounts.edit', ['account' => $this->accountRepoInterface->find($account->id)]);
     }
 
     /**
@@ -124,7 +130,7 @@ class AccountController extends Controller
      */
     public function update(Request $request, Account $account)
     {
-      $request -> validate([
+        $request->validate([
             'user_name' => 'required',
             'first_name' => 'required',
             'last_name' => 'required',
@@ -140,9 +146,9 @@ class AccountController extends Controller
 
         // dd($account->id, $request->all('user_name','first_name','last_name','dob','phone','email','address'));
 
-        $this->accountRepoInterface->update($request,$account->id);
+        $this->accountRepoInterface->update($request, $account->id);
         // account::where('id',$account->id)->update($request->all('user_name','first_name','last_name','dob','phone','email','address','hobby','gender','country','state'));
-        return redirect() -> route('accounts.index') -> with('update-msg',"Updated Successfully");
+        return redirect()->route('accounts.index')->with('update-msg', "Updated Successfully");
     }
 
     /**
@@ -153,7 +159,7 @@ class AccountController extends Controller
      */
     public function destroy(Account $account)
     {
-    //    $account->delete();
+        //    $account->delete();
         // account::find($account->id)->delete();
 
         // account::findOrFail($account->id)->delete();
@@ -161,8 +167,6 @@ class AccountController extends Controller
         $this->accountRepoInterface->delete($account->id);
 
 
-        return redirect() -> route('accounts.index') ->with('message', 'Deleted');
-
-     
+        return redirect()->route('accounts.index')->with('message', 'Deleted');
     }
 }

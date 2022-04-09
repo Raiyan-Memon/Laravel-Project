@@ -15,5 +15,8 @@
     
         @include('accounts.form')
 
+      
+
     {{!! Form::close() !!}}
+
 {{-- </form> --}}
