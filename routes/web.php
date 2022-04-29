@@ -34,7 +34,7 @@ Route::get('/', function () {
 Auth::routes();
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::resource('/contacts/testing', [ContactController::class]);
+// Route::resource('/contacts/testing', [ContactController::class]);
 
 
 Route::resource('/accounts', AccountController::class);

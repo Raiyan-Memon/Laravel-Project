@@ -33,7 +33,6 @@ Route::post('/delete', [SetDataController::class, 'destroy']);
 
 Route::post('register', [ApiAuthenticationController::class, 'register']);
 Route::post('login', [ApiAuthenticationController::class, 'login']);
-
 Route::middleware('auth:api')->group(function () {
     Route::get('getuser', [ApiAuthenticationController::class, 'userInfo']);
 });
