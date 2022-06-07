@@ -9,4 +9,4 @@
 
 ## About Project
 
-In this there are 4 CRUD operation attached with Many to Many relationship, all CRUD operations has UUID in it, In this I have added authentication with Google and GitHub for login and registration. I have also have made an API and tested in Postman for all 4 CRUD operations.
+- In this there are 4 CRUD operation attached with Many to Many relationship, all CRUD operations has UUID in it, In this I have added authentication with Google and GitHub for login and registration. I have also have made an API and tested in Postman for all 4 CRUD operations.
